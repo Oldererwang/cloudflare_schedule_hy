@@ -5,8 +5,8 @@ compatibility_date = "2024-01-01"
 # KV存储配置
 [[kv_namespaces]]
 binding = "SCHEDULE_KV"
-id = "your-kv-namespace-id"
-preview_id = "your-preview-kv-namespace-id"
+id = "3c11fd5477004e44803c4ecaa3c93924"
+preview_id = "3c11fd5477004e44803c4ecaa3c93924"
 
 # Workers配置
 [env.production]
