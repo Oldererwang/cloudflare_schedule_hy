@@ -203,7 +203,332 @@ const HTML_CONTENT = `<!DOCTYPE html>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>日程管理系统</title>
 <style>
- /* === 样式同前，此处略 === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "PingFang SC", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f7f9fc;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 15px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 30px 0;
+  background: linear-gradient(120deg, #3a7bd5, #00d2ff);
+  color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 25px;
+}
+
+@media (max-width: 992px) {
+  .main-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-section {
+  background-color: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 20px;
+  align-self: start;
+}
+
+.form-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #3a7bd5;
+  border-bottom: 2px solid #e6f0ff;
+  padding-bottom: 10px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #555;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e1e5eb;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #3a7bd5;
+  box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.15);
+  outline: none;
+}
+
+textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #3a7bd5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.btn:hover {
+  background-color: #2a6ac5;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+.btn-small {
+  padding: 8px 16px;
+  font-size: 0.875rem;
+}
+
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+#submitBtn {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.schedule-section {
+  background-color: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.schedule-section h2 {
+  font-size: 1.5rem;
+  color: #3a7bd5;
+  border-bottom: 2px solid #e6f0ff;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.date-group {
+  margin-bottom: 25px;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.date-group h3 {
+  margin: 15px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+  color: #3a7bd5;
+  font-size: 1.2rem;
+}
+
+.schedule-list {
+  margin-top: 20px;
+}
+
+.schedule-item {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border-left: 4px solid #3a7bd5;
+  transition: all 0.3s ease;
+}
+
+.schedule-item:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+}
+
+.schedule-item.completed {
+  border-left-color: #28a745;
+  background-color: #f8fff9;
+  opacity: 0.85;
+}
+
+.schedule-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.schedule-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #444;
+}
+
+.completed .schedule-title {
+  text-decoration: line-through;
+  color: #6c757d;
+}
+
+.schedule-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+}
+
+.schedule-meta span {
+  display: inline-flex;
+  align-items: center;
+  color: #6c757d;
+}
+
+.priority-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.priority-high {
+  background-color: #fff2f0;
+  color: #dc3545 !important;
+}
+
+.priority-medium {
+  background-color: #fff8e6;
+  color: #fd7e14 !important;
+}
+
+.priority-low {
+  background-color: #e8f5e9;
+  color: #28a745 !important;
+}
+
+.schedule-description {
+  margin: 15px 0;
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: #666;
+  white-space: pre-line;
+}
+
+.schedule-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 50px 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  color: #6c757d;
+}
+
+.empty-state h3 {
+  margin-bottom: 10px;
+  color: #3a7bd5;
+}
+
+.loading {
+  text-align: center;
+  padding: 30px;
+  color: #6c757d;
+}
+
+/* 移动端适配 */
+@media screen and (max-width: 768px) {
+  .header {
+    padding: 20px 0;
+  }
+  
+  .header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .form-section, .schedule-section {
+    padding: 20px;
+  }
+  
+  .schedule-actions {
+    flex-direction: column;
+  }
+  
+  .schedule-actions button {
+    width: 100%;
+  }
+}
 </style>
 </head>
 <body>
@@ -215,7 +540,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
 
   <div class="main-content">
     <div class="form-section">
-      <h2 style="margin-bottom:20px;color:#333">添加新日程</h2>
+      <h2>添加新日程</h2>
       <form id="scheduleForm">
         <div class="form-group">
           <label for="title">标题 *</label>
@@ -243,8 +568,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
 
         <div class="form-group">
           <label for="description">描述</label>
-          <textarea id="description" name="description"
-                    placeholder="添加详细描述（可选）"></textarea>
+          <textarea id="description" name="description" placeholder="添加详细描述（可选）"></textarea>
         </div>
 
         <button type="submit" class="btn" id="submitBtn">
@@ -255,7 +579,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
 
     <div class="schedule-section">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-        <h2 style="color:#333">我的日程</h2>
+        <h2>我的日程</h2>
         <button class="btn btn-secondary btn-small" onclick="loadSchedules()">🔄 刷新</button>
       </div>
       <div id="scheduleList" class="schedule-list">
@@ -423,7 +747,7 @@ function editSchedule(id){
 // 删除
 async function deleteSchedule(id){
   const s=schedules.find(x=>x.id===id); if(!s)return;
-  if(!confirm('确定删除“'+s.title+'”吗？'))return;
+  if(!confirm('确定删除"'+s.title+'"吗？'))return;
   await fetch('/api/schedules/'+id,{method:'DELETE'});
   loadSchedules();
 }
