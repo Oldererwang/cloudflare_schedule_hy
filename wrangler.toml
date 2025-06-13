@@ -1,0 +1,16 @@
+name = "schedule-manager"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+# KV存储配置
+[[kv_namespaces]]
+binding = "SCHEDULE_KV"
+id = "your-kv-namespace-id"
+preview_id = "your-preview-kv-namespace-id"
+
+# Workers配置
+[env.production]
+name = "schedule-manager-prod"
+
+[env.staging]
+name = "schedule-manager-staging"
